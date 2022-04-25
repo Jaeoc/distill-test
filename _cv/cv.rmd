@@ -1,0 +1,196 @@
+---
+output: 
+  pdf_document:
+    latex_engine: pdflatex
+    template: svm-latex-cv.tex
+geometry: margin=1in
+keep_tex: FALSE
+
+
+title: "CV"
+author: Anton Olsson-Collentine
+
+jobtitle: "PhD candidate, Tilburg Meta-Research Center"
+address: "Department of Methodology and Statistics, Tilburg University"
+fontawesome: yes
+email: anton@olssoncollentine.com
+#github: jaeoc
+# twitter: a_collentine
+#osf: "ORCid: 0000-0002-4948-0178"
+#phone: ""
+web: olssoncollentine.com
+updated: yes
+
+keywords: R Markdown, academic CV, template
+
+fontfamily: mathpazo
+fontfamilyoptions: sc, osf
+fontsize: 11pt
+linkcolor: blue
+urlcolor: blue
+---
+ 
+<!-- Adapted from Steven Miller's template: http://svmiller.com/blog/2016/03/svm-r-markdown-cv/ 
+For kableExtra to function I had to add some packages to the .tex preamble: \usepackage{float}, \usepackage{array}, \usepackage{booktabs}, \usepackage{tabu}-->
+
+<!-- In addition, I have added \usepackage{titlesec} + two lines of code in .tex preamble to get lines under each header following this stackexchange question: https://tex.stackexchange.com/questions/84061/how-can-i-make-a-bold-horizontal-rule-under-each-section-title -->
+
+<!-- Inspired also by https://github.com/marsha5813/resume  -->
+
+\arrayrulecolor{white}
+<!-- This makes all lines in the tables invisible (white), when combined with adding the package \usepackage{colortbl} to the .tex preamble. See https://stackoverflow.com/questions/53868409/is-there-a-way-to-make-a-kable-without-lines-borders-for-pdf -->
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE)
+
+library(kableExtra) #for more table options when printing
+```
+
+
+```{r data, cache=TRUE}
+
+#Input data for each section. New lines inside a table cell should be separated by ';'.
+
+edu <- tibble::tribble(
+  ~when, ~what,
+  "2018 - present", "PhD candidate in Methodology and Statistics; Tilburg University, the Netherlands",
+  "2018", "Msc. Social and Behavioral Sciences (Cum Laude);Tilburg University, the Netherlands ;Specialization: Methodology and Statistics.",
+  "2016", "Bsc. Psychology ;The University of Gothenburg, Sweden"
+)
+
+
+appoint <- tibble::tribble(
+  ~when, ~what, 
+   "2019 - present", "Statistical consultant ETZ hospitals; Departmental liaison providing statistical consulting to medical researchers at the ETZ hospitals upon request by the ETZ research coordinator",
+  "2020 - 2022", "PhD representative Interuniversity Graduate School of Psychometrics and Sociometrics (IOPS); Among other things, activities consisted of attending IOPS board meetings, selecting reviewers for new IOPS proposals, and chairing the IOPS PhD student meeting.",
+  "2019", "Organizing committee Tilburg Meta-research Day 2019; Member of the organizing committee of an 1-day meta-research conference at Tilburg University. Plenary speakers: John Ioannidis, Ana Marušić, and Sarah de Rijcke."
+)
+
+teach <- tibble::tribble(
+  ~when, ~what, 
+  "2018", "Test theory (psychometrics); Tilburg University, the Netherlands",
+  "2018", "Introduction to statistics; Tilburg University, the Netherlands",
+  "2017", "Test theory (psychometrics); Tilburg University, the Netherlands"
+  )
+
+papers <- tibble::tribble(
+  ~when, ~what,
+  "2021", "Mulder, J., Williams, D. R., Gu, X., Tomarken, A., Böing-Messing, F., Olsson-Collentine, A., Meijerink-Bosman, M., Menke, J., van Aert, R., Fox, J.-P., Hoijtink, H., Rosseel, Y., Wagenmakers, E.-J., & van Lissa, C. (2021). BFpack: Flexible Bayes Factor Testing of Scientific Theories in R. Journal of Statistical Software, 100(18), 1–63. https://doi.org/10.18637/jss.v100.i18",
+  "2020", "Olsson-Collentine, A., Wicherts, J. M., & van Assen, M. A. L. M. (2020). Heterogeneity in direct replications in psychology and its association with effect size. Psychological Bulletin, 146(10), 922–940. https://doi.org/10.1037/bul0000294", 
+  "2020", "Maassen E, van Assen MALM, Nuijten MB, Olsson-Collentine A, Wicherts JM (2020) Reproducibility of individual effect sizes in meta-analyses in psychology. PLoS ONE 15(5): e0233107. https://doi.org/10.1371/journal.pone.0233107",
+  "2019", "Olsson-Collentine, A., van Assen, M. A. L. M., & Hartgerink, C. H. J. (2019). The Prevalence of Marginally Significant Results in Psychology Over Time. Psychological Science, 30(4), 576–586. https://doi.org/10.1177/0956797619830326",
+  "2019", "Mulder, J. & Olsson-Collentine, A. (2019). Simple Bayesian testing of scientific expectations in linear regression models. Behavior Research Methods. https://doi.org/10.3758/s13428-018-01196-9",
+  "Accepted", "van Aert, R. C. M., Nuijten, M. B., Olsson-Collentine, A., Stoevenbelt, A. H.,vandenAkker,O.,& Wicherts,J.M.(2021). Comparing the prevalence of statistical reporting inconsistencies in COVID-19 preprints and matched controls: A Registered Report (Stage 1). Royal Society Open Science. Conditionally accepted",
+  "Submitted", "Olsson-Collentine, A., van Aert, R. C. M., Bakker, M., & Wicherts, J. M. (2021). Meta-analyzing the multiverse: A peek under the hood of selective reporting. doi:10.31234/osf.io/43yae",
+  "Submitted", "van Assen, M. A. L. M., van den Akker, O. R., Augusteijn, H. E. M., Bakker,M.,Nuijten,M.B.,Olsson-Collentine,A.,Stoevenbelt,A.H.,Wicherts,J.M.,& van Aert, R. C. M. (2021). The meta-plot: A graphical tool for interpreting the results of a meta-analysis."
+)
+
+talk <- tibble::tribble(
+  ~when,  ~what,
+  "2021", 'Metascience 2021 conference; "Meta-analyzing the multiverse: A peek under the hood of selective reporting"',
+  "2021", 'AIP LECCE 2021 conference; "Confidence in hypothesis-testing with a multiverse of outcomes"', 
+  "2020", 'IOPS winter conference 2020; "Meta-analyzing the multiverse: A peek under the hood of selective reporting"',
+  "2019", 'Platform for Young Meta-Scientists (PYMS); Tilburg, the Netherlands; "Vague theory, unmotivated choices, and exaggerated conclusions"',
+  "2019", 'Open Science 2019 conference; Trier, Germany; "Heterogeneity in direct replications in psychology and its association with effect size"',
+  "2019", 'ICPS Paris conference; Paris, France; "Heterogeneity in direct replications in psychology and its association with effect size"',
+  "2018", 'EPP Meta-Analysis Symposium (invited talk); Heeze, the Netherlands; "Heterogeneity and Publication bias"'
+)
+
+memberships <- c(
+  "Society for Improvement of Psychology (SIPS)",
+  "Interuniversity Graduate School of Psychometrics and Sociometrics (IOPS)",
+  "Psychological Science Accelerator (PSA)",
+  "Society for Open, Reliable, and Transparent Ecology and Evolutionary biology (SORTEE)"
+)
+
+grants_awards <- tibble::tribble( #not currently implemented
+  ~when, ~what,
+  "2019", "Research Synthesis PhD Travel Grant (200€); Travel grant to participate in the Research Synthesis 2019 conference" 
+)
+
+supervision <- tibble::tribble( #not currently implemented
+  ~when, ~what,
+  "Oct 2020 - Feb 2021", "Supervisor Sep Hesselmans; Bachelor thesis: Construct validity in Registered Replication Reports"
+)
+```
+
+
+```{r table_functions}
+#Function to format the input data and make it ready for printing
+
+format_output <- function(input){
+  #Make text until first ';' bold
+  text_to_bold <- unlist(lapply(strsplit(input$what, split = ";"), function(x) x[[1]])) #extract until first ';' for each data point
+  text_to_bold <- gsub("\\(", "\\\\(", text_to_bold) #any left parentheses must be escaped so gsub works in next step 
+  input$what <- mapply(gsub, text_to_bold, paste0("\\\\textbf{", text_to_bold, "}"), input$what) #replace by (latex) bold version, mapply loops over each data point
+  
+  #make a linebreak after each ';' when printing table (linebreak function adds some latex code)
+  input$what <- kableExtra::linebreak(input$what, linebreaker = ";")
+  
+  input
+}
+
+
+#function to create tables
+CV_table <- function(x){
+  knitr::kable(x, booktabs = TRUE, col.names = NULL, escape= FALSE, linesep = "\\addlinespace") %>% 
+  column_spec(1,"2.5cm", bold = TRUE) %>% 
+  column_spec(2, "13.3cm")}
+```
+
+```{r format-data}
+input <- list(education = edu,
+              appointments = appoint,
+              teaching = teach,
+              supervision = supervision,
+              grants = grants_awards,
+              talks = talk)
+
+input <- lapply(input, format_output)
+
+#For education and academic appointments [edit: removed], add empty row after each row so that there is space between entries in the output
+input[c("education")] <- lapply(input[c("education")], function(x) sapply(x, rbind, ""))
+
+#add papers to list, which needs different formatting
+input$papers <- papers
+input$papers$what <- gsub("Olsson-Collentine", "\\\\textbf{Olsson-Collentine}", input$papers$what) #bold
+input$papers$what <- gsub("&", "\\\\&", input$papers$what) #& must be escaped
+```
+
+
+\vspace{1.2cm}
+<!-- Adds some vertical spacing between header and rest -->
+
+# Education
+
+`r input$education %>% CV_table()`
+
+# Academic appointments
+
+`r input$appointments %>% CV_table()`
+
+# Publications
+
+`r input$papers %>% CV_table()`
+
+# Presentations
+
+`r input$talks %>% CV_table()`
+
+# Grants
+
+`r input$grants %>% CV_table()`
+
+# Teaching (tutorials)
+
+`r input$teaching %>% CV_table()`
+
+# Supervision
+
+`r input$supervision %>% CV_table()`
+
+# Professional memberships
+
+`r knitr::kable(memberships, booktabs = TRUE, col.names = NULL, escape= FALSE, linesep = "\\addlinespace")` 
+

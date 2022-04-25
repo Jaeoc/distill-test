@@ -1,0 +1,27 @@
+{
+  "articles": [
+    {
+      "path": "index.html",
+      "title": "Anton Olsson-Collentine",
+      "description": "PhD candidate\n",
+      "author": [],
+      "contents": "\r\n\r\n          \r\n          \r\n          Anton Olsson-Collentine\r\n          \r\n          \r\n          Home\r\n          Publications\r\n          CV\r\n          Writing\r\n          ☰\r\n          \r\n          \r\n      \r\n        \r\n          \r\n            \r\n              \r\n            \r\n              Anton Olsson-Collentine\r\n            \r\n            \r\n              \r\n                \r\n                    \r\n                      \r\n                        \r\n                      \r\n                    \r\n                  \r\n                                    \r\n                    \r\n                      \r\n                        \r\n                      \r\n                    \r\n                  \r\n                                    \r\n                    \r\n                      \r\n                        \r\n                      \r\n                    \r\n                  \r\n                                    \r\n                    \r\n                      \r\n                        \r\n                      \r\n                    \r\n                  \r\n                                    \r\n                    \r\n                      \r\n                        \r\n                      \r\n                    \r\n                  \r\n                                  \r\n            \r\n          \r\n        \r\n        \r\n        \r\n          \r\n            I am a PhD candidate with the Meta-research Center at Tilburg University. My research interests include meta- and multiverse analyses, the interpretation of statistical output and facilitating statistical best practices.\r\n          \r\n        \r\n      \r\n    \r\n\r\n    \r\n      \r\n        \r\n          \r\n            \r\n              \r\n            \r\n              Anton Olsson-Collentine\r\n            \r\n            \r\n              \r\n                \r\n                                    \r\n                    \r\n                      \r\n                    \r\n                  \r\n                                    \r\n                    \r\n                      \r\n                    \r\n                  \r\n                                    \r\n                    \r\n                      \r\n                    \r\n                  \r\n                                    \r\n                    \r\n                      \r\n                    \r\n                  \r\n                                    \r\n                    \r\n                      \r\n                    \r\n                  \r\n                                  \r\n              \r\n            \r\n            \r\n              I am a PhD candidate with the Meta-research Center at Tilburg University. My research interests include meta- and multiverse analyses, the interpretation of statistical output and facilitating statistical best practices.\r\n            \r\n        \r\n      \r\n    \r\n\r\n    \r\n    \r\n    ",
+      "last_modified": "2022-04-25T16:15:04+02:00"
+    },
+    {
+      "path": "publications.html",
+      "title": "Scientific Publications",
+      "author": [],
+      "contents": "\r\nMulder, J., Williams, D. R., Gu, X., Tomarken, A., Böing-Messing, F.,Olsson-Collentine, A., Meijerink-Bosman, M., Menke, J., van Aert, R., Fox, J.-P., Hoijtink, H., Rosseel, Y., Wagenmakers, E.-J., & van Lissa, C. (2021). BFpack: Flexible Bayes Factor Testing of Scientific Theories in R. Journal of Statistical Software, 100(18), 1–63. https://doi.org/10.18637/jss.v100.i18\r\n\r\n2021\r\npdf website\r\nAnton Olsson-Collentine, Jelte M. Wicherts, Marcel A. L. M. van Assen (2020). Heterogeneity in direct replications in psychology and its association with effect size. Psychological Bulletin, https://doi.org/10.1037/bul0000294. pdf code/data \r\nEsther Maassen, Marcel A. L. M. van Assen, Michele B. Nuijten, Anton Olsson-Collentine, Jelte M. Wicherts (2020). Reproducibility of Individual Effect Sizes in Meta-Analyses in Psychology. PLOS ONE, https://10.1371/journal.pone.0233107. pdf code/data \r\nAnton Olsson-Collentine, Marcel A. L. M. van Assen, Chris H. J. Hartgerink (2019). The Prevalence of Marginally Significant Results in Psychology Over Time. Psychological Science, https://doi.org/10.1177/0956797619830326. pdf code/data \r\nJ. Mulder, A. Olsson-Collentine (2019). Simple Bayesian Testing of Scientific Expectations in Linear Regression Models. Behavior Research Methods, https://doi.org/10.3758/s13428-018-01196-9 pdf code supplement \r\n\r\n\r\n\r\n",
+      "last_modified": "2022-04-25T16:15:09+02:00"
+    },
+    {
+      "path": "writing.html",
+      "title": "Writing",
+      "author": [],
+      "contents": "\r\n\r\n\r\n\r\n",
+      "last_modified": "2022-04-25T16:15:11+02:00"
+    }
+  ],
+  "collections": ["posts/posts.json"]
+}
