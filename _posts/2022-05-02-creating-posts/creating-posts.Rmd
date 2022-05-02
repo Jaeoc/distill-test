@@ -1,0 +1,26 @@
+---
+title: "creating-posts"
+description: |
+  A short description of the post.
+author:
+  - name: Anton Olsson Collentine
+    url: {}
+date: 2022-05-02
+output:
+  distill::distill_article:
+    self_contained: false
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+In distill, blog posts must be knit intentionally and separately from the rest
+of the webpage. In VS code this must be done using
+ `rmarkdown::render("./path-to-file")`. The relative path of the file is accessible
+ through right-clicking the file.
+
+ To create a new post, use `distill::create_post("name")`
+
+It will also be useful to set up my own template: https://www.ericekholm.com/posts/2021-04-02-personalizing-the-distill-template/

@@ -1,23 +1,18 @@
 ---
-title: "Anton Olsson-Collentine"
-description: |
-  PhD candidate
-image: "images/portrait.jpg"
+image: "images/portrait-round.jpg"
 links:
   - label: '<i class="fa fa-envelope" aria-hidden="true"></i>'
-    url: "mailto:email@email.com"
+    url: "mailto:anton@olssoncollentine.com"
   - label: '<i class="fab fa-twitter"></i>'
-    url: "https://twitter.com/"
+    url: "https://twitter.com/a_collentine"
   - label: '<i class="fab fa-github"></i> '
-    url: "https://github.com/"
-  - label: '<i class="ai ai-orcid fa-lg"></i>'
-    url: "https://orcid.com/"
+    url: "https://github.com/jaeoc"
   - label: '<i class="ai ai-osf fa-lg"></i>'
-    url: "osf.com"
+    url: "https://osf.io/ermz3/"
 
 site: distill::distill_website
 output:
-  postcards::trestles
+  postcards::jolla
 ---
- 
+
 I am a PhD candidate with the Meta-research Center at Tilburg University. My research interests include meta- and multiverse analyses, the interpretation of statistical output and facilitating statistical best practices.

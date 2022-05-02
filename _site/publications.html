@@ -457,265 +457,6 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   <link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet"/>
   <link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet"/>
   <script src="site_libs/headroom-0.9.4/headroom.min.js"></script>
-  <script src="site_libs/autocomplete-0.37.1/autocomplete.min.js"></script>
-  <script src="site_libs/fuse-6.4.1/fuse.min.js"></script>
-
-  <script type="application/javascript">
-
-  function getMeta(metaName) {
-    var metas = document.getElementsByTagName('meta');
-    for (let i = 0; i < metas.length; i++) {
-      if (metas[i].getAttribute('name') === metaName) {
-        return metas[i].getAttribute('content');
-      }
-    }
-    return '';
-  }
-
-  function offsetURL(url) {
-    var offset = getMeta('distill:offset');
-    return offset ? offset + '/' + url : url;
-  }
-
-  function createFuseIndex() {
-
-    // create fuse index
-    var options = {
-      keys: [
-        { name: 'title', weight: 20 },
-        { name: 'categories', weight: 15 },
-        { name: 'description', weight: 10 },
-        { name: 'contents', weight: 5 },
-      ],
-      ignoreLocation: true,
-      threshold: 0
-    };
-    var fuse = new window.Fuse([], options);
-
-    // fetch the main search.json
-    return fetch(offsetURL('search.json'))
-      .then(function(response) {
-        if (response.status == 200) {
-          return response.json().then(function(json) {
-            // index main articles
-            json.articles.forEach(function(article) {
-              fuse.add(article);
-            });
-            // download collections and index their articles
-            return Promise.all(json.collections.map(function(collection) {
-              return fetch(offsetURL(collection)).then(function(response) {
-                if (response.status === 200) {
-                  return response.json().then(function(articles) {
-                    articles.forEach(function(article) {
-                      fuse.add(article);
-                    });
-                  })
-                } else {
-                  return Promise.reject(
-                    new Error('Unexpected status from search index request: ' +
-                              response.status)
-                  );
-                }
-              });
-            })).then(function() {
-              return fuse;
-            });
-          });
-
-        } else {
-          return Promise.reject(
-            new Error('Unexpected status from search index request: ' +
-                        response.status)
-          );
-        }
-      });
-  }
-
-  window.document.addEventListener("DOMContentLoaded", function (event) {
-
-    // get search element (bail if we don't have one)
-    var searchEl = window.document.getElementById('distill-search');
-    if (!searchEl)
-      return;
-
-    createFuseIndex()
-      .then(function(fuse) {
-
-        // make search box visible
-        searchEl.classList.remove('hidden');
-
-        // initialize autocomplete
-        var options = {
-          autoselect: true,
-          hint: false,
-          minLength: 2,
-        };
-        window.autocomplete(searchEl, options, [{
-          source: function(query, callback) {
-            const searchOptions = {
-              isCaseSensitive: false,
-              shouldSort: true,
-              minMatchCharLength: 2,
-              limit: 10,
-            };
-            var results = fuse.search(query, searchOptions);
-            callback(results
-              .map(function(result) { return result.item; })
-            );
-          },
-          templates: {
-            suggestion: function(suggestion) {
-              var img = suggestion.preview && Object.keys(suggestion.preview).length > 0
-                ? `<img src="${offsetURL(suggestion.preview)}"</img>`
-                : '';
-              var html = `
-                <div class="search-item">
-                  <h3>${suggestion.title}</h3>
-                  <div class="search-item-description">
-                    ${suggestion.description || ''}
-                  </div>
-                  <div class="search-item-preview">
-                    ${img}
-                  </div>
-                </div>
-              `;
-              return html;
-            }
-          }
-        }]).on('autocomplete:selected', function(event, suggestion) {
-          window.location.href = offsetURL(suggestion.path);
-        });
-        // remove inline display style on autocompleter (we want to
-        // manage responsive display via css)
-        $('.algolia-autocomplete').css("display", "");
-      })
-      .catch(function(error) {
-        console.log(error);
-      });
-
-  });
-
-  </script>
-
-  <style type="text/css">
-
-  .nav-search {
-    font-size: x-small;
-  }
-
-  /* Algolioa Autocomplete */
-
-  .algolia-autocomplete {
-    display: inline-block;
-    margin-left: 10px;
-    vertical-align: sub;
-    background-color: white;
-    color: black;
-    padding: 6px;
-    padding-top: 8px;
-    padding-bottom: 0;
-    border-radius: 6px;
-    border: 1px #0F2E3D solid;
-    width: 180px;
-  }
-
-
-  @media screen and (max-width: 768px) {
-    .distill-site-nav .algolia-autocomplete {
-      display: none;
-      visibility: hidden;
-    }
-    .distill-site-nav.responsive .algolia-autocomplete {
-      display: inline-block;
-      visibility: visible;
-    }
-    .distill-site-nav.responsive .algolia-autocomplete .aa-dropdown-menu {
-      margin-left: 0;
-      width: 400px;
-      max-height: 400px;
-    }
-  }
-
-  .algolia-autocomplete .aa-input, .algolia-autocomplete .aa-hint {
-    width: 90%;
-    outline: none;
-    border: none;
-  }
-
-  .algolia-autocomplete .aa-hint {
-    color: #999;
-  }
-  .algolia-autocomplete .aa-dropdown-menu {
-    width: 550px;
-    max-height: 70vh;
-    overflow-x: visible;
-    overflow-y: scroll;
-    padding: 5px;
-    margin-top: 3px;
-    margin-left: -150px;
-    background-color: #fff;
-    border-radius: 5px;
-    border: 1px solid #999;
-    border-top: none;
-  }
-
-  .algolia-autocomplete .aa-dropdown-menu .aa-suggestion {
-    cursor: pointer;
-    padding: 5px 4px;
-    border-bottom: 1px solid #eee;
-  }
-
-  .algolia-autocomplete .aa-dropdown-menu .aa-suggestion:last-of-type {
-    border-bottom: none;
-    margin-bottom: 2px;
-  }
-
-  .algolia-autocomplete .aa-dropdown-menu .aa-suggestion .search-item {
-    overflow: hidden;
-    font-size: 0.8em;
-    line-height: 1.4em;
-  }
-
-  .algolia-autocomplete .aa-dropdown-menu .aa-suggestion .search-item h3 {
-    font-size: 1rem;
-    margin-block-start: 0;
-    margin-block-end: 5px;
-  }
-
-  .algolia-autocomplete .aa-dropdown-menu .aa-suggestion .search-item-description {
-    display: inline-block;
-    overflow: hidden;
-    height: 2.8em;
-    width: 80%;
-    margin-right: 4%;
-  }
-
-  .algolia-autocomplete .aa-dropdown-menu .aa-suggestion .search-item-preview {
-    display: inline-block;
-    width: 15%;
-  }
-
-  .algolia-autocomplete .aa-dropdown-menu .aa-suggestion .search-item-preview img {
-    height: 3em;
-    width: auto;
-    display: none;
-  }
-
-  .algolia-autocomplete .aa-dropdown-menu .aa-suggestion .search-item-preview img[src] {
-    display: initial;
-  }
-
-  .algolia-autocomplete .aa-dropdown-menu .aa-suggestion.aa-cursor {
-    background-color: #eee;
-  }
-  .algolia-autocomplete .aa-dropdown-menu .aa-suggestion em {
-    font-weight: bold;
-    font-style: normal;
-  }
-
-  </style>
-
-
   <!--/radix_placeholder_navigation_in_header-->
   <!--radix_placeholder_distill-->
 
@@ -2124,7 +1865,9 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   /* Optional: embed custom fonts here with `@import`          */
   /* This must remain at the top of this file.                 */
 
-
+  @import url('https://fonts.googleapis.com/css2?family=Slabo');
+  @import url('https://fonts.googleapis.com/css2?family=Open+Sans');
+  @import url('https://fonts.googleapis.com/css2?family=Fira+Mono');
 
   html {
     /*-- Main font sizes --*/
@@ -2140,10 +1883,10 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
     --aside-color:     rgba(0, 0, 0, 0.6);
     --fig-cap-color:   rgba(0, 0, 0, 0.6);
     /*-- Specify custom fonts ~~~ must be imported above   --*/
-    --heading-font:    sans-serif;
-    --mono-font:       monospace;
-    --body-font:       sans-serif;
-    --navbar-font:     sans-serif;  /* websites + blogs only */
+    --heading-font:    "Slabo", serif;
+    --mono-font:       "Fira Mono", monospace;
+    --body-font:       "Open Sans", sans-serif;
+    --navbar-font:     "Slabo", serif;  /* websites + blogs only */
   }
 
   /*-- ARTICLE METADATA --*/
@@ -2172,11 +1915,11 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   /* These properties only apply to Distill sites and blogs  */
 
   .distill-site-header {
-    --title-size:       18px;
-    --text-color:       rgba(255, 255, 255, 0.8);
-    --text-size:        15px;
-    --hover-color:      white;
-    --bkgd-color:       #0F2E3D;
+    --title-size:       24px;
+    --text-color:       rgba(0, 0, 0, 0.8);
+    --text-size:        21px;
+    --hover-color:      rgb(7, 95, 4);
+    --bkgd-color:       #ffffff;
   }
 
   .distill-site-footer {
@@ -2201,9 +1944,13 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   }
 
   .icon-link:hover {
-      background-color: #0b2836;
+      background-color: #2d7194;
       color: #ffffff;
-  }</style>
+  }
+
+  .rounded-circle {
+      height: 50rem;
+    }</style>
   <style type="text/css">
   /* base style */
 
@@ -2360,6 +2107,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   }</style>
   <!--/radix_placeholder_distill-->
   <script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
+  <script src="site_libs/kePrint-0.0.1/kePrint.js"></script>
   <script src="site_libs/popper-2.6.0/popper.min.js"></script>
   <link href="site_libs/tippy-6.2.7/tippy.css" rel="stylesheet" />
   <link href="site_libs/tippy-6.2.7/tippy-light-border.css" rel="stylesheet" />
@@ -2389,13 +2137,11 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <nav class="distill-site-nav distill-site-header">
 <div class="nav-left">
 <a href="index.html" class="title">Anton Olsson-Collentine</a>
-<input id="distill-search" class="nav-search hidden" type="text" placeholder="Search..."/>
 </div>
 <div class="nav-right">
 <a href="index.html">Home</a>
 <a href="publications.html">Publications</a>
 <a href="_cv/CV.pdf">CV</a>
-<a href="writing.html">Writing</a>
 <a href="javascript:void(0);" class="nav-toggle">&#9776;</a>
 </div>
 </nav>
@@ -2413,15 +2159,124 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 
 
 <div class="d-article">
-<p>Mulder, J., Williams, D. R., Gu, X., Tomarken, A., Böing-Messing, F.,<strong>Olsson-Collentine, A.</strong>, Meijerink-Bosman, M., Menke, J., van Aert, R., Fox, J.-P., Hoijtink, H., Rosseel, Y., Wagenmakers, E.-J., &amp; van Lissa, C. (2021). BFpack: Flexible Bayes Factor Testing of Scientific Theories in R. Journal of Statistical Software, 100(18), 1–63. <a href="https://doi.org/10.18637/jss.v100.i18" class="uri">https://doi.org/10.18637/jss.v100.i18</a></p>
-<aside>
+<div class="layout-chunk" data-layout="l-body">
+<table>
+<tbody>
+<tr>
+<td style="text-align:left;vertical-align:top;">
 2021
-</aside>
-<p><a href="../publications/bfpack.pdf" class="icon-link" target="_blank" rel="noopener">pdf</a> <a href="https://bfpack.info/" class="icon-link" target="_blank" rel="noopener">website</a></p>
-<p><strong>Anton Olsson-Collentine</strong>, Jelte M. Wicherts, Marcel A. L. M. van Assen (2020). Heterogeneity in direct replications in psychology and its association with effect size. Psychological Bulletin, <a href="https://doi.org/10.1037/bul0000294" class="uri">https://doi.org/10.1037/bul0000294</a>. <br> <a href="../publications/postprint_heterogeneity.pdf" class="icon-link" target="_blank" rel="noopener">pdf</a> <a href="https:/osf.io/4z3e7/" class="icon-link" target="_blank" rel="noopener">code/data</a> <br/></p>
-<p>Esther Maassen, Marcel A. L. M. van Assen, Michele B. Nuijten, <strong>Anton Olsson-Collentine</strong>, Jelte M. Wicherts (2020). Reproducibility of Individual Effect Sizes in Meta-Analyses in Psychology. PLOS ONE, <a href="https://10.1371/journal.pone.0233107" class="uri">https://10.1371/journal.pone.0233107</a>. <br> <a href="../publications/maassen_reproducibility-meta.pdf" class="icon-link" target="_blank" rel="noopener">pdf</a> <a href="https://osf.io/7nsmd/" class="icon-link" target="_blank" rel="noopener">code/data</a> <br/></p>
-<p><strong>Anton Olsson-Collentine</strong>, Marcel A. L. M. van Assen, Chris H. J. Hartgerink (2019). The Prevalence of Marginally Significant Results in Psychology Over Time. Psychological Science, <a href="https://doi.org/10.1177/0956797619830326" class="uri">https://doi.org/10.1177/0956797619830326</a>. <br> <a href="../publications/marginal.pdf" class="icon-link" target="_blank" rel="noopener">pdf</a> <a href="https://osf.io/28gxz/" class="icon-link" target="_blank" rel="noopener">code/data</a> <br/></p>
-<p>J. Mulder, A. <strong>Olsson-Collentine</strong> (2019). Simple Bayesian Testing of Scientific Expectations in Linear Regression Models. Behavior Research Methods, <a href="https://doi.org/10.3758/s13428-018-01196-9" class="uri">https://doi.org/10.3758/s13428-018-01196-9</a> <br> <a href="../publications/lmhyp.pdf" class="icon-link" target="_blank" rel="noopener">pdf</a> <a href="https://github.com/Jaeoc/lmhyp" class="icon-link" target="_blank" rel="noopener">code</a> <a href="https://osf.io/g8c9p/" class="icon-link" target="_blank" rel="noopener">supplement</a> <br/></p>
+</td>
+<td style="text-align:left;vertical-align:top;">
+Mulder, J., Williams, D. R., Gu, X., Tomarken, A., Böing-Messing, F.,<strong>Olsson-Collentine, A.</strong>, Meijerink-Bosman, M., Menke, J., van Aert, R., Fox, J.-P., Hoijtink, H., Rosseel, Y., Wagenmakers, E.-J., &amp; van Lissa, C. (2021). BFpack: Flexible Bayes Factor Testing of Scientific Theories in R. <em>Journal of Statistical Software</em>, 100(18), 1–63. <a href="https://doi.org/10.18637/jss.v100.i18" class="uri">https://doi.org/10.18637/jss.v100.i18</a>
+</td>
+<td style="text-align:left;vertical-align:top;">
+<a href="../publications/bfpack.pdf" style="     color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #0F2E3D !important;">pdf</a>
+</td>
+<td style="text-align:left;vertical-align:top;">
+<a href="https://bfpack.info/" style="     color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #0F2E3D !important;">code/data</a>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;vertical-align:top;">
+2020
+</td>
+<td style="text-align:left;vertical-align:top;">
+<strong>Anton Olsson-Collentine</strong>, Jelte M. Wicherts, Marcel A. L. M. van Assen (2020). Heterogeneity in direct replications in psychology and its association with effect size. <em>Psychological Bulletin</em>, <a href="https://doi.org/10.1037/bul0000294" class="uri">https://doi.org/10.1037/bul0000294</a>.
+</td>
+<td style="text-align:left;vertical-align:top;">
+<a href="../publications/postprint_heterogeneity.pdf" style="     color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #0F2E3D !important;">pdf</a>
+</td>
+<td style="text-align:left;vertical-align:top;">
+<a href="https:/osf.io/4z3e7/" style="     color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #0F2E3D !important;">code/data</a>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;vertical-align:top;">
+2020
+</td>
+<td style="text-align:left;vertical-align:top;">
+Esther Maassen, Marcel A. L. M. van Assen, Michele B. Nuijten, <strong>Anton Olsson-Collentine</strong>, Jelte M. Wicherts (2020). Reproducibility of Individual Effect Sizes in Meta-Analyses in Psychology. <em>PLOS ONE</em>, <a href="https://10.1371/journal.pone.0233107" class="uri">https://10.1371/journal.pone.0233107</a>.
+</td>
+<td style="text-align:left;vertical-align:top;">
+<a href="../publications/maassen_reproducibility-meta.pdf" style="     color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #0F2E3D !important;">pdf</a>
+</td>
+<td style="text-align:left;vertical-align:top;">
+<a href="https://osf.io/7nsmd/" style="     color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #0F2E3D !important;">code/data</a>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;vertical-align:top;">
+2019
+</td>
+<td style="text-align:left;vertical-align:top;">
+<strong>Anton Olsson-Collentine</strong>, Marcel A. L. M. van Assen, Chris H. J. Hartgerink (2019). The Prevalence of Marginally Significant Results in Psychology Over Time. <em>Psychological Science</em>, <a href="https://doi.org/10.1177/0956797619830326" class="uri">https://doi.org/10.1177/0956797619830326</a>.
+</td>
+<td style="text-align:left;vertical-align:top;">
+<a href="../publications/marginal.pdf" style="     color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #0F2E3D !important;">pdf</a>
+</td>
+<td style="text-align:left;vertical-align:top;">
+<a href="https://osf.io/28gxz/" style="     color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #0F2E3D !important;">code/data</a>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;vertical-align:top;">
+2019
+</td>
+<td style="text-align:left;vertical-align:top;">
+J. Mulder, A. <strong>Olsson-Collentine</strong> (2019). Simple Bayesian Testing of Scientific Expectations in Linear Regression Models. <em>Behavior Research Methods</em>, <a href="https://doi.org/10.3758/s13428-018-01196-9" class="uri">https://doi.org/10.3758/s13428-018-01196-9</a>.
+</td>
+<td style="text-align:left;vertical-align:top;">
+<a href="../publications/lmhyp.pdf" style="     color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #0F2E3D !important;">pdf</a>
+</td>
+<td style="text-align:left;vertical-align:top;">
+<a href="https://github.com/Jaeoc/lmhyp" style="     color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #0F2E3D !important;">code/data</a>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;vertical-align:top;">
+Accepted
+</td>
+<td style="text-align:left;vertical-align:top;">
+van Aert, R. C. M., Nuijten, M. B., <strong>Olsson-Collentine, A.</strong>, Stoevenbelt, A. H.,vandenAkker,O.,&amp; Wicherts,J.M.(2021). Comparing the prevalence of statistical reporting inconsistencies in COVID-19 preprints and matched controls: A Registered Report (Stage 1). <em>Royal Society Open Science</em>. Conditionally accepted.
+</td>
+<td style="text-align:left;vertical-align:top;">
+<a href="../publications/covid-preprints-stage1.pdf" style="     color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #0F2E3D !important;">pdf</a>
+</td>
+<td style="text-align:left;vertical-align:top;">
+<a href="https://osf.io/tdfgq/" style="     color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #0F2E3D !important;">code/data</a>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;vertical-align:top;">
+Submitted
+</td>
+<td style="text-align:left;vertical-align:top;">
+<strong>Olsson-Collentine, A.</strong>, van Aert, R. C. M., Bakker, M., &amp; Wicherts, J. M. (2021). Meta-analyzing the multiverse: A peek under the hood of selective reporting. doi.org/10.31234/osf.io/43yae.
+</td>
+<td style="text-align:left;vertical-align:top;">
+<a href="..publication/manuscript_meta_multiverse" style="     color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #0F2E3D !important;">pdf</a>
+</td>
+<td style="text-align:left;vertical-align:top;">
+<a href="https://osf.io/j8yg2/" style="     color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #0F2E3D !important;">code/data</a>
+</td>
+</tr>
+<tr>
+<td style="text-align:left;vertical-align:top;">
+Submitted
+</td>
+<td style="text-align:left;vertical-align:top;">
+van Assen, M. A. L. M., van den Akker, O. R., Augusteijn, H. E. M., Bakker,M.,Nuijten,M.B., <strong>Olsson-Collentine, A.</strong>,Stoevenbelt,A.H.,Wicherts,J.M.,&amp; van Aert, R. C. M. (2021). The meta-plot: A graphical tool for interpreting the results of a meta-analysis.
+</td>
+<td style="text-align:left;vertical-align:top;">
+<a href="NA" style="     color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #0F2E3D !important;">-</a>
+</td>
+<td style="text-align:left;vertical-align:top;">
+<a href="NA" style="     color: white !important;border-radius: 4px; padding-right: 4px; padding-left: 4px; background-color: #0F2E3D !important;">-</a>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->

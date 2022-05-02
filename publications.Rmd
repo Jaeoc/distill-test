@@ -6,12 +6,12 @@ title: "Scientific Publications"
 knitr::opts_chunk$set(echo = FALSE)
 library(kableExtra)
 papers <- c(
-    "Mulder, J., Williams, D. R., Gu, X., Tomarken, A., Böing-Messing, F.,**Olsson-Collentine, A.**, Meijerink-Bosman, M., Menke, J., van Aert, R., Fox, J.-P., Hoijtink, H., Rosseel, Y., Wagenmakers, E.-J., & van Lissa, C. (2021). BFpack: Flexible Bayes Factor Testing of Scientific Theories in R. Journal of Statistical Software, 100(18), 1–63. https://doi.org/10.18637/jss.v100.i18",
-    "**Anton Olsson-Collentine**, Jelte M. Wicherts, Marcel A. L. M. van Assen (2020). Heterogeneity in direct replications in psychology and its association with effect size. Psychological Bulletin, https://doi.org/10.1037/bul0000294.",
-    "Esther Maassen, Marcel A. L. M. van Assen, Michele B. Nuijten, **Anton Olsson-Collentine**, Jelte M. Wicherts (2020). Reproducibility of Individual Effect Sizes in Meta-Analyses in Psychology. PLOS ONE, https://10.1371/journal.pone.0233107.",
-    "**Anton Olsson-Collentine**, Marcel A. L. M. van Assen, Chris H. J. Hartgerink (2019). The Prevalence of Marginally Significant Results in Psychology Over Time. Psychological Science, https://doi.org/10.1177/0956797619830326.",
-    "J. Mulder, A. **Olsson-Collentine** (2019). Simple Bayesian Testing of Scientific Expectations in Linear Regression Models. Behavior Research Methods, https://doi.org/10.3758/s13428-018-01196-9.",
-    "van Aert, R. C. M., Nuijten, M. B., **Olsson-Collentine, A.**, Stoevenbelt, A. H.,vandenAkker,O.,& Wicherts,J.M.(2021). Comparing the prevalence of statistical reporting inconsistencies in COVID-19 preprints and matched controls: A Registered Report (Stage 1). Royal Society Open Science. Conditionally accepted.",
+    "Mulder, J., Williams, D. R., Gu, X., Tomarken, A., Böing-Messing, F.,**Olsson-Collentine, A.**, Meijerink-Bosman, M., Menke, J., van Aert, R., Fox, J.-P., Hoijtink, H., Rosseel, Y., Wagenmakers, E.-J., & van Lissa, C. (2021). BFpack: Flexible Bayes Factor Testing of Scientific Theories in R. *Journal of Statistical Software*, 100(18), 1–63. https://doi.org/10.18637/jss.v100.i18",
+    "**Anton Olsson-Collentine**, Jelte M. Wicherts, Marcel A. L. M. van Assen (2020). Heterogeneity in direct replications in psychology and its association with effect size. *Psychological Bulletin*, https://doi.org/10.1037/bul0000294.",
+    "Esther Maassen, Marcel A. L. M. van Assen, Michele B. Nuijten, **Anton Olsson-Collentine**, Jelte M. Wicherts (2020). Reproducibility of Individual Effect Sizes in Meta-Analyses in Psychology. *PLOS ONE*, https://10.1371/journal.pone.0233107.",
+    "**Anton Olsson-Collentine**, Marcel A. L. M. van Assen, Chris H. J. Hartgerink (2019). The Prevalence of Marginally Significant Results in Psychology Over Time. *Psychological Science*, https://doi.org/10.1177/0956797619830326.",
+    "J. Mulder, A. **Olsson-Collentine** (2019). Simple Bayesian Testing of Scientific Expectations in Linear Regression Models. *Behavior Research Methods*, https://doi.org/10.3758/s13428-018-01196-9.",
+    "van Aert, R. C. M., Nuijten, M. B., **Olsson-Collentine, A.**, Stoevenbelt, A. H.,vandenAkker,O.,& Wicherts,J.M.(2021). Comparing the prevalence of statistical reporting inconsistencies in COVID-19 preprints and matched controls: A Registered Report (Stage 1). *Royal Society Open Science*. Conditionally accepted.",
     "**Olsson-Collentine, A.**, van Aert, R. C. M., Bakker, M., & Wicherts, J. M. (2021). Meta-analyzing the multiverse: A peek under the hood of selective reporting. doi.org/10.31234/osf.io/43yae.",
     "van Assen, M. A. L. M., van den Akker, O. R., Augusteijn, H. E. M., Bakker,M.,Nuijten,M.B., **Olsson-Collentine, A.**,Stoevenbelt,A.H.,Wicherts,J.M.,& van Aert, R. C. M. (2021). The meta-plot: A graphical tool for interpreting the results of a meta-analysis."
 )
@@ -32,10 +32,12 @@ pubs <- data.frame(years, papers, link1, link2)
 
 ```
 
+
 ```{r table1}
 
 knitr::kable(pubs, col.names = NULL, escape = FALSE) %>%
-column_spec(c(1:4),extra_css = "vertical-align:top;")  #beware the space, from https://stackoverflow.com/questions/49143690/rmarkdown-kable-vertically-align-cells
+column_spec(c(1:4),extra_css = "vertical-align:top;")   #beware the space, from https://stackoverflow.com/questions/49143690/rmarkdown-kable-vertically-align-cells
 
 
 ```
+

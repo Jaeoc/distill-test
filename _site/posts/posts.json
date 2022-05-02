@@ -1,19 +1,19 @@
 [
   {
-    "path": "posts/2022-02-20-hello/",
-    "title": "Hello",
+    "path": "posts/2022-05-02-creating-posts/",
+    "title": "creating-posts",
     "description": "A short description of the post.",
     "author": [
       {
-        "name": "Unknown",
+        "name": "Anton Olsson Collentine",
         "url": {}
       }
     ],
-    "date": "2022-02-20",
+    "date": "2022-05-02",
     "categories": [],
-    "contents": "\r\nDistill is a publication format for scientific and technical writing, native to the web.\r\nLearn more about using Distill at https://rstudio.github.io/distill.\r\n\r\n\r\n\r\n",
+    "contents": "\r\nIn distill, blog posts must be knit intentionally and separately from the rest of the webpage. In VS code this must be done using rmarkdown::render(\"./path-to-file\"). The relative path of the file is accessible through right-clicking the file.\r\nTo create a new post, use distill::create_post(\"name\")\r\nIt will also be useful to set up my own template: https://www.ericekholm.com/posts/2021-04-02-personalizing-the-distill-template/\r\n\r\n\r\n\r\n",
     "preview": {},
-    "last_modified": "2022-04-19T16:56:46+02:00",
-    "input_file": {}
+    "last_modified": "2022-05-02T15:51:03+02:00",
+    "input_file": "creating-posts.knit.md"
   }
 ]

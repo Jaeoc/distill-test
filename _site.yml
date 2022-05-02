@@ -1,4 +1,3 @@
-name: "."
 title: "Anton Olsson-Collentine"
 description: |
   distill-tester
@@ -6,6 +5,7 @@ output_dir: "_site"
 base_url: olssoncollentine.com
 theme: olssoncollentine.css
 navbar:
+  search: false
   right:
     - text: "Home"
       href: index.html
@@ -13,8 +13,8 @@ navbar:
       href: publications.html
     - text: "CV"
       href: _cv/CV.pdf
-    - text: "Writing"
-      href: writing.html
+#    - text: "Writing"
+#      href: writing.html
 output:
   distill::distill_article:
     includes:
